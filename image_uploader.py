@@ -1,6 +1,6 @@
 import os
 import subprocess
-from PIL import Image
+from PIL import Image, ImageOps
 from datetime import datetime
 
 # --- Configuration ---
@@ -47,6 +47,9 @@ def process_and_upload():
                 # Process image
                 try:
                     with Image.open(source_path) as img:
+                        # Fix orientation based on EXIF data
+                        img = ImageOps.exif_transpose(img)
+
                         # Convert to RGB (fixes PNG transparency issues)
                         if img.mode in ("RGBA", "P"):
                             img = img.convert("RGB")
