@@ -1,0 +1,8 @@
+# Ignore raw source images
+raw/
+*.jpg
+*.jpeg
+*.png
+
+# Python
+__pycache__/
