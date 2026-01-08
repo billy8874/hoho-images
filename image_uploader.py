@@ -25,6 +25,7 @@ def process_and_upload():
     print(f"🚀 Starting image processing from '{SOURCE_FOLDER}' to '{UPLOAD_FOLDER}'...")
     
     processed_count = 0
+    skipped_count = 0
     
     # Walk through the raw directory
     for root, dirs, files in os.walk(source_dir):
@@ -44,6 +45,12 @@ def process_and_upload():
                 new_filename = f"{name_no_ext}.webp"
                 target_path = os.path.join(target_subdir, new_filename)
                 
+                # Check if file already exists
+                if os.path.exists(target_path):
+                    # print(f"⏩ Skipped (already exists): {os.path.join(rel_path, new_filename)}")
+                    skipped_count += 1
+                    continue
+
                 # Process image
                 try:
                     with Image.open(source_path) as img:
@@ -67,8 +74,10 @@ def process_and_upload():
                 except Exception as e:
                     print(f"❌ Error processing {filename}: {e}")
 
+    print(f"\n📊 Summary: {processed_count} new images processed, {skipped_count} skipped.")
+
     if processed_count == 0:
-        print("⚠️ No images found to process.")
+        print("🎉 No new images to upload.")
         return
 
     # --- Git Automation ---
