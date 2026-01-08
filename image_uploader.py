@@ -2,6 +2,10 @@ import os
 import subprocess
 from PIL import Image, ImageOps
 from datetime import datetime
+import pillow_heif
+
+# Register HEIF opener
+pillow_heif.register_heif_opener()
 
 # --- Configuration ---
 # Source and Destination folders
@@ -30,7 +34,7 @@ def process_and_upload():
     # Walk through the raw directory
     for root, dirs, files in os.walk(source_dir):
         for filename in files:
-            if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
+            if filename.lower().endswith(('.jpg', '.jpeg', '.png', '.heic', '.heif')):
                 source_path = os.path.join(root, filename)
                 
                 # Calculate relative path to preserve structure
